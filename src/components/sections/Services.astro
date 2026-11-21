@@ -1,0 +1,256 @@
+
+---
+import {
+  Truck,
+  Package,
+  Undo2,
+  Info,
+} from "@lucide/astro";
+
+const services = [
+  {
+    title: "Pakete versenden",
+    description: "Schnell und einfach",
+    icon: Truck,
+  },
+  {
+    title: "Pakete abholen",
+    description: "Bequem und flexibel",
+    icon: Package,
+  },
+  {
+    title: "Retouren",
+    description: "Einfach zurücksenden",
+    icon: Undo2,
+  },
+  {
+    title: "Persönliche Beratung",
+    description: "Freundlich und kompetent",
+    icon: Info,
+  },
+];
+---
+
+<section
+  id="services"
+  class="services-section"
+  aria-labelledby="services-title"
+>
+  <div class="services-container">
+    <h2 id="services-title" class="services-sr-only">
+      Unsere Leistungen
+    </h2>
+
+    <div class="services-bar">
+      {services.map(({ title, description, icon: Icon }) => (
+        <div class="service-item">
+          <div class="service-icon">
+            <Icon
+              size={42}
+              stroke-width={1.9}
+              aria-hidden="true"
+            />
+          </div>
+
+          <div class="service-text">
+            <h3>{title}</h3>
+            <p>{description}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .services-section {
+    position: relative;
+    z-index: 5;
+    display: flow-root;
+    width: 100%;
+    padding: 0 24px 0;
+    background: #ffffff;
+    scroll-margin-top: 6rem;
+  }
+
+  .services-container {
+    width: 100%;
+    max-width: 1280px;
+    margin-inline: auto;
+  }
+
+  .services-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  /* White floating services bar */
+
+  .services-bar {
+    position: relative;
+    z-index: 2;
+
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+
+    min-height: 116px;
+    margin-top: -58px;
+
+    background: #f8fafc;
+    border: 1px solid #e5e9ef;
+    border-radius: 24px;
+
+    box-shadow:
+      0 14px 32px rgba(20, 38, 61, 0.12),
+      0 3px 8px rgba(20, 38, 61, 0.05);
+  }
+
+  /* Individual service */
+
+  .service-item {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+
+    min-width: 0;
+    padding: 22px 16px;
+  }
+
+  /* Vertical separators */
+
+  .service-item:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    top: 25%;
+    right: 0;
+
+    width: 1px;
+    height: 50%;
+    background: #d5dce5;
+  }
+
+  /* Icons */
+
+  .service-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    color: #f5bc00;
+  }
+
+  /* Text */
+
+  .service-text {
+    min-width: 0;
+  }
+
+  .service-text h3 {
+    margin: 0 0 6px;
+
+    color: #14263d;
+    font-size: clamp(0.95rem, 1.25vw, 1.2rem);
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: -0.025em;
+  }
+
+  .service-text p {
+    margin: 0;
+
+    color: #566579;
+    font-size: 0.86rem;
+    line-height: 1.4;
+  }
+
+  /* Tablet */
+
+  @media (max-width: 1050px) {
+    .services-bar {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      margin-top: -50px;
+    }
+
+    .service-item {
+      justify-content: flex-start;
+      padding: 22px 28px;
+    }
+
+    .service-item::after {
+      display: none;
+    }
+
+    .service-item:nth-child(odd) {
+      border-right: 1px solid #d5dce5;
+    }
+
+    .service-item:nth-child(-n + 2) {
+      border-bottom: 1px solid #d5dce5;
+    }
+
+    .service-text h3 {
+      font-size: 1.05rem;
+    }
+  }
+
+  /* Mobile */
+
+  @media (max-width: 600px) {
+    .services-section {
+      padding: 0 16px 30px;
+    }
+
+    .services-bar {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      margin-top: -42px;
+      border-radius: 18px;
+    }
+
+    .service-item {
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+
+      padding: 18px 10px;
+      text-align: center;
+    }
+
+    .service-icon svg {
+      width: 32px;
+      height: 32px;
+    }
+
+    .service-text h3 {
+      font-size: 0.9rem;
+      margin-bottom: 4px;
+    }
+
+    .service-text p {
+      font-size: 0.76rem;
+      line-height: 1.35;
+    }
+  }
+
+  @media (max-width: 360px) {
+    .service-text h3 {
+      font-size: 0.82rem;
+    }
+
+    .service-text p {
+      font-size: 0.7rem;
+    }
+  }
+</style>
+

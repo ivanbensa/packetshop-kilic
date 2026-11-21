@@ -1,0 +1,44 @@
+---
+import "@fontsource-variable/manrope";
+
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Hero from "@/components/sections/Hero.astro";
+import Section from "@/components/wrapper/Section.astro";
+import Heading from "@/components/typography/Heading.astro";
+import Paragraph from "@/components/typography/Paragraph.astro";
+import Services from "@/components/sections/Services.astro";
+import Products from "@/components/sections/Products.astro";
+import AboutReviews from "@/components/sections/AboutReviews.astro";
+import Contact from "@/components/sections/Contact.astro";
+---
+
+<BaseLayout title="Paketshop in Berlin">
+  <main>
+    <Hero />
+    <Services />
+    <Products />
+    <AboutReviews />
+    <Contact />
+  </main>
+</BaseLayout>
+
+
+<style is:global>
+  @layer base {
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 6rem;
+    }
+
+    section[id] {
+      scroll-margin-top: 6rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+</style>
+

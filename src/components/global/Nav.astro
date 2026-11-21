@@ -1,0 +1,468 @@
+
+---
+import NavLink from "@/components/global/NavLink.astro";
+import { Package } from "@lucide/astro";
+import { SITE_NAME } from "@/consts.ts";
+
+interface Props {
+  render?: boolean;
+  overlap?: boolean;
+}
+
+const { render = true, overlap = false } = Astro.props;
+
+const isHome = Astro.url.pathname === "/";
+---
+
+{render && (
+<header
+  class:list={[
+    "nav_wrap",
+    (isHome || overlap) && "nav-overlay",
+  ]}
+  data-fade={isHome ? "true" : "false"}
+>
+  <div class="nav_inner">
+    <a class="nav_logo" href="/" aria-label={SITE_NAME}>
+      <Package
+        class="brand_icon"
+        size={44}
+        stroke-width={2}
+        aria-hidden="true"
+      />
+
+      <span class="brand_text">
+          <span class="brand_name">
+            Packetshop <strong>Kilic</strong>
+          </span>
+
+          <span class="brand_subtitle">
+            Paket und Presse Paradies
+          </span>
+        </span>
+    </a>
+
+    <button
+      class="nav_toggle"
+      type="button"
+      aria-label="Menü öffnen"
+      aria-expanded="false"
+      aria-controls="nav-menu"
+    >
+      <span class="nav_toggle_icon"></span>
+    </button>
+
+    <nav
+      class="nav_menu"
+      id="nav-menu"
+      aria-label="Hauptnavigation"
+    >
+      <div class="nav_menu_inner">
+        <ul class="nav_links">
+          <NavLink href="/#services">Leistungen</NavLink>
+          <NavLink href="/#sortiment">Sortiment</NavLink>
+          <NavLink href="/#standort">Standort</NavLink>
+          <NavLink href="/#ueber-uns">Über uns</NavLink>
+          <NavLink href="/#bewertungen">Bewertungen</NavLink>
+        </ul>
+      </div>
+    </nav>
+  </div>
+</header>
+  )}
+
+<noscript>
+  <style>
+    .nav_toggle {
+      display: none;
+    }
+
+    .nav_menu {
+      display: block;
+      visibility: visible;
+    }
+
+    .nav_menu_inner {
+      opacity: 1;
+    }
+  </style>
+</noscript>
+
+<script>
+  const nav = document.querySelector<HTMLElement>(".nav_wrap");
+  const toggle = nav?.querySelector<HTMLButtonElement>(".nav_toggle");
+
+  if (nav && toggle) {
+    const fadeEnabled = nav.dataset.fade === "true";
+    let ticking = false;
+
+    const updateFade = () => {
+      if (!fadeEnabled) return;
+
+      const menuOpen = nav.classList.contains("open");
+
+      const opacity = menuOpen
+        ? 1
+        : Math.max(0, 1 - window.scrollY / 260);
+
+      nav.style.opacity = String(opacity);
+      nav.style.pointerEvents = opacity < 0.05 ? "none" : "auto";
+      nav.inert = opacity < 0.05;
+    };
+
+    const setOpen = (open: boolean) => {
+      nav.classList.toggle("open", open);
+
+      toggle.setAttribute("aria-expanded", String(open));
+      toggle.setAttribute(
+        "aria-label",
+        open ? "Menü schließen" : "Menü öffnen"
+      );
+
+      updateFade();
+    };
+
+    toggle.addEventListener("click", () => {
+      setOpen(toggle.getAttribute("aria-expanded") !== "true");
+    });
+
+    nav.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => setOpen(false));
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && nav.classList.contains("open")) {
+        setOpen(false);
+        toggle.focus();
+      }
+    });
+
+    document.addEventListener("click", (event) => {
+      if (
+        nav.classList.contains("open") &&
+        event.target instanceof Node &&
+        !nav.contains(event.target)
+      ) {
+        setOpen(false);
+      }
+    });
+
+    window
+      .matchMedia("(min-width: 980px)")
+      .addEventListener("change", (event) => {
+        if (event.matches) setOpen(false);
+      });
+
+    window.addEventListener(
+      "scroll",
+      () => {
+        if (!ticking) {
+          window.requestAnimationFrame(() => {
+            updateFade();
+            ticking = false;
+          });
+          ticking = true;
+        }
+      },
+      { passive: true }
+    );
+
+    updateFade();
+  }
+</script>
+
+<style is:global>
+  @layer components {
+    .nav_wrap {
+      position: sticky;
+      top: 0;
+      inset-inline: 0;
+      z-index: 1000;
+      width: 100%;
+      padding: 0 32px;
+      color: #ffffff;
+      background: rgba(9, 19, 30, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-radius: 0 0 18px 18px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-top: none;
+      box-shadow: 0 6px 30px rgba(0, 0, 0, 0.12);
+    }
+
+    .nav_wrap.nav-overlay {
+      position: fixed;
+    }
+
+    .nav_inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 32px;
+      width: 100%;
+      max-width: 1280px;
+      min-height: 84px;
+      margin: 0 auto;
+    }
+
+    /* Logo */
+
+    .nav_logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
+      color: #ffffff;
+      text-decoration: none;
+    }
+
+    .nav_wrap .brand_icon {
+      flex-shrink: 0;
+      color: #f5c518;
+    }
+
+    .brand_text {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .brand_name {
+      color: #ffffff;
+      font-size: clamp(1.15rem, 2vw, 1.5rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.035em;
+      white-space: nowrap;
+    }
+
+    .brand_name strong {
+      font-weight: 800;
+    }
+
+    .brand_subtitle {
+      color: #cbd5df;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+    }
+
+    /* Desktop navigation */
+
+    .nav_menu {
+      position: static;
+      display: block;
+      visibility: visible;
+    }
+
+    .nav_menu_inner {
+      overflow: visible;
+      opacity: 1;
+    }
+
+    .nav_links {
+      display: flex;
+      align-items: center;
+      gap: clamp(18px, 2.5vw, 36px);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .nav_wrap .nav_links > li {
+      border: 0;
+    }
+
+    .nav_wrap .nav_link {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      min-height: 84px;
+      padding: 0;
+      color: #e0e5ed;
+      font-size: 0.95rem;
+      font-weight: 650;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: color 200ms ease;
+    }
+
+    .nav_wrap .nav_link::after {
+      content: "";
+      position: absolute;
+      bottom: 19px;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: #f5c518;
+      border-radius: 3px;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 250ms ease;
+    }
+
+    .nav_wrap .nav_link:hover,
+    .nav_wrap .nav_link:focus-visible,
+    .nav_wrap .nav_link[aria-current="page"] {
+      color: #f5c518;
+    }
+
+    .nav_wrap .nav_link:hover::after,
+    .nav_wrap .nav_link:focus-visible::after,
+    .nav_wrap .nav_link[aria-current="page"]::after {
+      transform: scaleX(1);
+    }
+
+    /* Hamburger */
+
+    .nav_toggle {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      flex-shrink: 0;
+      color: #ffffff;
+      cursor: pointer;
+      background: transparent;
+      border: 0;
+    }
+
+    .nav_toggle_icon {
+      position: relative;
+      width: 24px;
+      height: 2px;
+      background: currentColor;
+      transition: background 200ms ease;
+    }
+
+    .nav_toggle_icon::before,
+    .nav_toggle_icon::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      width: 24px;
+      height: 2px;
+      background: currentColor;
+      transition: transform 200ms ease;
+    }
+
+    .nav_toggle_icon::before {
+      transform: translateY(-7px);
+    }
+
+    .nav_toggle_icon::after {
+      transform: translateY(7px);
+    }
+
+    .nav_wrap.open .nav_toggle_icon {
+      background: transparent;
+    }
+
+    .nav_wrap.open .nav_toggle_icon::before {
+      transform: rotate(45deg);
+    }
+
+    .nav_wrap.open .nav_toggle_icon::after {
+      transform: rotate(-45deg);
+    }
+
+    /* Mobile */
+
+    @media (max-width: 979px) {
+      .nav_wrap {
+        padding: 0 20px;
+        border-radius: 0 0 14px 14px;
+      }
+
+      .nav_inner {
+        min-height: 72px;
+      }
+
+      .nav_wrap .brand_icon {
+        width: 36px;
+        height: 36px;
+      }
+
+      .brand_name {
+        font-size: 1.1rem;
+      }
+
+      .brand_subtitle {
+        font-size: 0.65rem;
+      }
+
+      .nav_toggle {
+        display: inline-flex;
+      }
+
+      .nav_menu {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        display: none;
+        visibility: hidden;
+        max-height: calc(100dvh - 72px);
+        overflow-y: auto;
+        background: rgba(9, 19, 30, 0.98);
+        border-radius: 0 0 14px 14px;
+      }
+
+      .nav_wrap.open .nav_menu {
+        display: block;
+        visibility: visible;
+      }
+
+      .nav_links {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+        padding: 12px 24px 24px;
+      }
+
+      .nav_wrap .nav_links > li {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .nav_wrap .nav_link {
+        display: flex;
+        min-height: 48px;
+        font-size: 1rem;
+      }
+
+      .nav_wrap .nav_link::after {
+        bottom: 5px;
+      }
+    }
+
+    @media (max-width: 390px) {
+      .nav_wrap {
+        padding-inline: 14px;
+      }
+
+      .nav_logo {
+        gap: 9px;
+      }
+
+      .brand_name {
+        font-size: 1rem;
+      }
+
+      .brand_subtitle {
+        font-size: 0.6rem;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .nav_wrap .nav_link,
+      .nav_wrap .nav_link::after,
+      .nav_toggle_icon,
+      .nav_toggle_icon::before,
+      .nav_toggle_icon::after {
+        transition: none;
+      }
+    }
+  }
+</style>
+

@@ -1,0 +1,637 @@
+---
+import {
+  Award,
+  Check,
+  Star,
+  ExternalLink,
+  ChevronLeft,
+  ChevronRight,
+} from "@lucide/astro";
+
+const googleMapsUrl = "https://maps.app.goo.gl/qmXCYYK7oojWE8nC8";
+
+const benefits = [
+  "Persönlicher und freundlicher Kontakt",
+  "Paketservices direkt vor Ort",
+  "Kurze Wege und persönlicher Service",
+  "Zentrale Lage – direkt bei NORMA",
+];
+
+// Sinngemäße deutsche Übersetzungen ausgewählter Google-Rezensionen.
+// Vor Veröffentlichung mit dem deutschen Originaltext abgleichen.
+const reviews = [
+  {
+    author: "Akuma Gero",
+    quote:
+      "Absolut fantastischer Service und ein großartiger Inhaber. Endlich ist der Laden gut organisiert und sauber. Ich würde gern noch mehr Sterne geben!",
+  },
+  {
+    author: "Gabriele Stiller",
+    quote:
+      "Was für ein freundlicher und hilfsbereiter junger Mann! Er erklärt alles sehr gut, und man fühlt sich bestens aufgehoben.",
+  },
+  {
+    author: "Melanie",
+    quote:
+      "Der neue Inhaber ist eine echte Bereicherung für unsere Nachbarschaft. Immer freundlich und aufmerksam – und die Auswahl ist jetzt noch größer.",
+  },
+  {
+    author: "G. P.",
+    quote:
+      "Der Laden ist unglaublich sauber und gepflegt. Eine tolle Auswahl und ein superfreundlicher, kompetenter Inhaber – auch seine Frau!",
+  },
+  {
+    author: "Anja B.",
+    quote:
+      "Pakete abzugeben und abzuholen macht richtig Freude, weil man immer mit einem Lächeln begrüßt wird.",
+  },
+  {
+    author: "Susanne Köhntopp",
+    quote: "Freundlich, kompetent, aufmerksam – besser geht es nicht!",
+  },
+  {
+    author: "Taner Kaya",
+    quote:
+      "Sehr freundlich, hilfsbereit und immer mit einem Lächeln im Gesicht. Wer einmal dort war, möchte nirgendwo anders mehr hingehen.",
+  },
+  {
+    author: "heidi rita raak",
+    quote:
+      "Sehr freundlicher und kompetenter Service. Ob Paketabgabe, Paketabholung, Lotto oder Kaffee zum Mitnehmen – hier findet man schnell eine Lösung.",
+  },
+];
+---
+
+<section
+  id="ueber-uns"
+  class="trust-section"
+  aria-label="Über uns und Kundenbewertungen"
+>
+  <div class="trust-container">
+    <div class="trust-grid">
+      <!-- LEFT: WHY CHOOSE US -->
+
+      <article class="trust-card trust-about">
+        <div class="trust-about-heading">
+          <Award size={46} stroke-width={2} aria-hidden="true" />
+
+          <h2>Warum Packetshop Kilic?</h2>
+        </div>
+
+        <ul class="trust-benefits">
+          {benefits.map((benefit) => (
+            <li>
+              <Check size={22} stroke-width={3} aria-hidden="true" />
+              <span>{benefit}</span>
+            </li>
+          ))}
+        </ul>
+      </article>
+
+      <!-- RIGHT: GOOGLE REVIEWS CAROUSEL -->
+
+      <article
+        id="bewertungen"
+        class="trust-card trust-reviews"
+        aria-labelledby="reviews-title"
+      >
+        <div class="reviews-summary">
+          <div class="google-heading">
+            <span class="google-logo" aria-hidden="true">
+              G
+            </span>
+
+            <h2 id="reviews-title">Google Bewertungen</h2>
+          </div>
+
+          <div class="summary-stars" aria-hidden="true">
+            {[1, 2, 3, 4, 5].map(() => (
+              <Star size={24} fill="currentColor" stroke-width={1.5} />
+            ))}
+          </div>
+
+          <p class="summary-description">Erfahrungen unserer Kunden</p>
+
+          <a
+            href={googleMapsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="google-link"
+          >
+            Alle Bewertungen
+            <ExternalLink size={16} aria-hidden="true" />
+          </a>
+        </div>
+
+        <!-- CAROUSEL -->
+
+        <div class="reviews-carousel" data-review-carousel>
+          <div class="review-slides" aria-live="polite">
+            {reviews.map((review, index) => (
+              <div class="review-slide" data-review-slide hidden={index !== 0}>
+                <div class="review-stars" aria-label="5 von 5 Sternen">
+                  {[1, 2, 3, 4, 5].map(() => (
+                    <Star
+                      size={15}
+                      fill="currentColor"
+                      stroke-width={1.5}
+                      aria-hidden="true"
+                    />
+                  ))}
+                </div>
+
+                <blockquote>„{review.quote}“</blockquote>
+
+                <span class="review-author">— {review.author}</span>
+              </div>
+            ))}
+          </div>
+
+          <div class="reviews-controls">
+            <button
+              type="button"
+              class="review-arrow"
+              data-review-prev
+              aria-label="Vorherige Bewertung"
+            >
+              <ChevronLeft size={22} aria-hidden="true" />
+            </button>
+
+            <div class="review-dots" aria-label="Bewertung auswählen">
+              {reviews.map((review, index) => (
+                <button
+                  type="button"
+                  class="review-dot"
+                  data-review-dot
+                  aria-label={`Bewertung ${index + 1} von ${reviews.length}: ${review.author}`}
+                  aria-current={index === 0 ? "true" : "false"}
+                />
+              ))}
+            </div>
+
+            <button
+              type="button"
+              class="review-arrow"
+              data-review-next
+              aria-label="Nächste Bewertung"
+            >
+              <ChevronRight size={22} aria-hidden="true" />
+            </button>
+          </div>
+
+          <span class="review-disclaimer">
+            Sinngemäß übersetzt · Originale auf Google
+          </span>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<script>
+  document
+    .querySelectorAll<HTMLElement>("[data-review-carousel]")
+    .forEach((carousel) => {
+      const slides = [
+        ...carousel.querySelectorAll<HTMLElement>("[data-review-slide]"),
+      ];
+
+      const dots = [
+        ...carousel.querySelectorAll<HTMLButtonElement>("[data-review-dot]"),
+      ];
+
+      const prev =
+        carousel.querySelector<HTMLButtonElement>("[data-review-prev]");
+
+      const next =
+        carousel.querySelector<HTMLButtonElement>("[data-review-next]");
+
+      if (!prev || !next || slides.length === 0) return;
+
+      let currentIndex = 0;
+
+      const showReview = (index: number) => {
+        currentIndex = (index + slides.length) % slides.length;
+
+        slides.forEach((slide, i) => {
+          slide.hidden = i !== currentIndex;
+        });
+
+        dots.forEach((dot, i) => {
+          dot.setAttribute("aria-current", String(i === currentIndex));
+        });
+      };
+
+      prev.addEventListener("click", () => {
+        showReview(currentIndex - 1);
+      });
+
+      next.addEventListener("click", () => {
+        showReview(currentIndex + 1);
+      });
+
+      dots.forEach((dot, index) => {
+        dot.addEventListener("click", () => {
+          showReview(index);
+        });
+      });
+
+      showReview(0);
+    });
+</script>
+
+<style>
+  .trust-section {
+    width: 100%;
+    padding: 36px 24px 44px;
+    background: #ffffff;
+    scroll-margin-top: 6rem;
+  }
+
+  .trust-container {
+    width: 100%;
+    max-width: 1280px;
+    margin-inline: auto;
+  }
+
+  .trust-grid {
+    display: grid;
+    grid-template-columns: 0.95fr 1.3fr;
+    gap: 24px;
+    align-items: stretch;
+  }
+
+  .trust-card {
+    min-width: 0;
+    border-radius: 20px;
+    padding: 28px;
+  }
+
+  /* LEFT CARD */
+
+  .trust-about {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: linear-gradient(125deg, #fff8e6 0%, #fff3d3 100%);
+  }
+
+  .trust-about-heading {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 22px;
+  }
+
+  .trust-about-heading svg {
+    flex-shrink: 0;
+    color: #f5c518;
+    fill: rgba(245, 197, 24, 0.12);
+  }
+
+  .trust-about-heading h2 {
+    margin: 0;
+    color: #14263d;
+    font-size: clamp(1.3rem, 2vw, 1.7rem);
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: -0.035em;
+  }
+
+  .trust-benefits {
+    display: flex;
+    flex-direction: column;
+    gap: 13px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .trust-benefits li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    color: #14263d;
+    font-size: 0.98rem;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  .trust-benefits svg {
+    flex-shrink: 0;
+    color: #e6b300;
+  }
+
+  /* RIGHT CARD */
+
+  .trust-reviews {
+    display: grid;
+    grid-template-columns: 0.85fr 1.15fr;
+    align-items: stretch;
+    background: #f5f7fa;
+    border: 1px solid #edf0f4;
+  }
+
+  .reviews-summary {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    min-width: 0;
+    padding-right: 22px;
+  }
+
+  .google-heading {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .google-logo {
+    flex-shrink: 0;
+    font-family: Arial, sans-serif;
+    font-size: 2.5rem;
+    font-weight: 800;
+    line-height: 1;
+
+    background: conic-gradient(
+      #4285f4 0deg 90deg,
+      #34a853 90deg 170deg,
+      #fbbc05 170deg 230deg,
+      #ea4335 230deg 290deg,
+      #4285f4 290deg 360deg
+    );
+
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .google-heading h2 {
+    margin: 0;
+    color: #14263d;
+    font-size: 1.12rem;
+    font-weight: 800;
+    line-height: 1.3;
+  }
+
+  .summary-stars {
+    display: flex;
+    gap: 3px;
+    color: #f5c518;
+    margin-bottom: 12px;
+  }
+
+  .summary-description {
+    margin: 0;
+    color: #566579;
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+
+  .google-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 20px;
+    color: #14263d;
+    font-size: 0.88rem;
+    font-weight: 800;
+    text-decoration: none;
+  }
+
+  .google-link:hover {
+    color: #a77d00;
+  }
+
+  /* CAROUSEL */
+
+  .reviews-carousel {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-width: 0;
+    gap: 14px;
+    padding-left: 24px;
+    border-left: 1px solid #dfe5eb;
+  }
+
+  .review-slides {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex: 1;
+    min-height: 160px;
+  }
+
+  .review-slide {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .review-slide[hidden] {
+    display: none;
+  }
+
+  .review-stars {
+    display: flex;
+    gap: 2px;
+    color: #f5c518;
+  }
+
+  .review-slide blockquote {
+    margin: 0;
+    color: #14263d;
+    font-size: clamp(0.88rem, 1.1vw, 1rem);
+    font-style: italic;
+    font-weight: 600;
+    line-height: 1.55;
+  }
+
+  .review-author {
+    color: #566579;
+    font-size: 0.85rem;
+    font-weight: 700;
+  }
+
+  /* CAROUSEL CONTROLS */
+
+  .reviews-controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .review-arrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    color: #14263d;
+    background: transparent;
+    border: 0;
+    border-radius: 50%;
+    cursor: pointer;
+    transition:
+      background 200ms ease,
+      color 200ms ease;
+  }
+
+  .review-arrow:hover {
+    background: #f5c518;
+  }
+
+  .review-dots {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+
+  .review-dot {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 24px;
+    padding: 0;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+  }
+
+  .review-dot::after {
+    content: "";
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #cbd5e1;
+    transition:
+      background 200ms ease,
+      transform 200ms ease;
+  }
+
+  .review-dot[aria-current="true"]::after {
+    background: #f5c518;
+    transform: scale(1.5);
+  }
+
+  .review-dot:hover::after {
+    background: #e6b300;
+  }
+
+  .review-arrow:focus-visible,
+  .review-dot:focus-visible,
+  .google-link:focus-visible {
+    outline: 2px solid #14263d;
+    outline-offset: 3px;
+  }
+
+  .review-disclaimer {
+    color: #7a8797;
+    font-size: 0.68rem;
+    line-height: 1.4;
+    text-align: center;
+  }
+
+  /* TABLET */
+
+  @media (max-width: 1050px) {
+    .trust-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .trust-card {
+      padding: 24px;
+    }
+
+    .trust-reviews {
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    .reviews-summary {
+      padding-right: 0;
+    }
+
+    .google-heading {
+      margin-bottom: 12px;
+    }
+
+    .reviews-carousel {
+      padding-left: 0;
+      padding-top: 18px;
+      border-left: 0;
+      border-top: 1px solid #dfe5eb;
+    }
+
+    .review-slides {
+      min-height: 130px;
+    }
+
+    .review-slide blockquote {
+      font-size: 0.95rem;
+    }
+  }
+
+  /* MOBILE */
+
+  @media (max-width: 700px) {
+    .trust-section {
+      padding: 24px 16px 36px;
+    }
+
+    .trust-grid {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    .trust-card {
+      padding: 24px 20px;
+      border-radius: 16px;
+    }
+
+    .trust-about-heading {
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .trust-about-heading svg {
+      width: 36px;
+      height: 36px;
+    }
+
+    .trust-about-heading h2 {
+      font-size: 1.35rem;
+    }
+
+    .trust-benefits li {
+      font-size: 0.93rem;
+    }
+
+    .reviews-summary {
+      align-items: flex-start;
+    }
+
+    .review-slides {
+      min-height: 145px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .google-link,
+    .review-arrow,
+    .review-dot::after {
+      transition: none;
+    }
+  }
+</style>

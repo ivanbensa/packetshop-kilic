@@ -1,0 +1,144 @@
+---
+import { Package } from "@lucide/astro";
+
+interface Props {
+  render?: boolean;
+}
+
+const { render = true } = Astro.props;
+const year = new Date().getFullYear();
+---
+
+{render && (
+  <footer class="pk-footer">
+    <div class="pk-footer-container">
+      <div class="pk-footer-main">
+        <a
+          href="/"
+          class="pk-footer-logo"
+          aria-label="Packetshop Kilic – Startseite"
+        >
+          <Package size={25} stroke-width={2} aria-hidden="true" />
+
+          <span>
+            Packetshop <strong>Kilic</strong>
+          </span>
+        </a>
+
+        <p>Dein Paketshop direkt bei NORMA in Berlin.</p>
+      </div>
+
+      <div class="pk-footer-bottom">
+        <span>© {year} Packetshop Kilic</span>
+
+        <nav aria-label="Rechtliche Informationen">
+          <a href="/impressum">Impressum</a>
+          <a href="/datenschutz">Datenschutz</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
+)}
+
+<style>
+  .pk-footer {
+    width: 100%;
+    padding: 26px 24px 20px;
+    background: #0d1929;
+    color: #ffffff;
+  }
+
+  .pk-footer-container {
+    width: 100%;
+    max-width: 1280px;
+    margin-inline: auto;
+  }
+
+  .pk-footer-main {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding-bottom: 22px;
+  }
+
+  .pk-footer-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: #ffffff;
+    font-size: 1.1rem;
+    font-weight: 800;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .pk-footer-logo svg,
+  .pk-footer-logo strong {
+    color: #f5c518;
+  }
+
+  .pk-footer-main p {
+    margin: 0;
+    color: #aebdca;
+    font-size: 0.85rem;
+  }
+
+  .pk-footer-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+
+    padding-top: 18px;
+    border-top: 1px solid #33465b;
+
+    color: #aebdca;
+    font-size: 0.8rem;
+  }
+
+  .pk-footer-bottom nav {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .pk-footer-bottom a {
+    color: #cbd5df;
+    text-decoration: none;
+    transition: color 200ms ease;
+  }
+
+  .pk-footer-bottom a:hover {
+    color: #f5c518;
+  }
+
+  .pk-footer a:focus-visible {
+    outline: 2px solid #f5c518;
+    outline-offset: 4px;
+  }
+
+  @media (max-width: 767px) {
+    .pk-footer {
+      padding: 25px 20px;
+    }
+
+    .pk-footer-main {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .pk-footer-bottom {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 14px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pk-footer-bottom a {
+      transition: none;
+    }
+  }
+</style>

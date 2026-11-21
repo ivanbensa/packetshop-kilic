@@ -1,0 +1,289 @@
+---
+import { MapPin, Package, ArrowUpRight } from "@lucide/astro";
+
+const mapsUrl = "https://maps.app.goo.gl/qmXCYYK7oojWE8nC8";
+---
+
+<section class="pk-hero" aria-labelledby="hero-title">
+  <div class="pk-hero-container">
+    <div class="pk-hero-content">
+      <span class="pk-hero-badge">
+        <MapPin size={18} stroke-width={2.5} aria-hidden="true" />
+        Berlin
+      </span>
+
+      <h1 id="hero-title">
+        Ihr Paketshop
+        <span>in Berlin</span>
+      </h1>
+
+      <p class="pk-hero-description">
+        Paketversand, Paketabholung und vieles mehr – zuverlässig, freundlich
+        und direkt bei NORMA.
+      </p>
+
+      <div class="pk-hero-actions">
+        <a href="#services" class="pk-hero-btn pk-hero-btn-primary">
+          <Package size={21} stroke-width={2} aria-hidden="true" />
+          Unsere Services
+        </a>
+
+        <a
+          href={mapsUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="pk-hero-btn pk-hero-btn-secondary"
+        >
+          <MapPin size={21} stroke-width={2} aria-hidden="true" />
+          Standort & Anfahrt
+          <ArrowUpRight size={17} aria-hidden="true" />
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .pk-hero {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-height: 100svh;
+    padding: 150px 24px 90px;
+    overflow: hidden;
+
+    background-color: #14263d;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image: url("/images/hero/packetshop-hero.png");
+
+
+    color: #ffffff;
+    isolation: isolate;
+  }
+
+  /* Dark overlay over the future background image */
+  .pk-hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+
+    background:
+      linear-gradient(
+        90deg,
+        rgba(7, 18, 30, 0.92) 0%,
+        rgba(7, 18, 30, 0.72) 43%,
+        rgba(7, 18, 30, 0.15) 100%
+      ),
+      linear-gradient(0deg, rgba(7, 18, 30, 0.35), transparent 60%);
+  }
+
+  .pk-hero-container {
+    width: 100%;
+    max-width: 1200px;
+    margin-inline: auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  .pk-hero-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+    max-width: 780px;
+  }
+
+  /* Berlin badge */
+
+  .pk-hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+
+    padding: 9px 17px;
+    margin-bottom: 22px;
+
+    background: #f5c518;
+    color: #14263d;
+
+    border-radius: 100px;
+    font-size: 1rem;
+    font-weight: 800;
+    line-height: 1;
+  }
+
+  /* Main heading */
+
+  .pk-hero h1 {
+    margin: 0;
+
+    color: #ffffff;
+    font-size: clamp(3.2rem, 6.4vw, 5.2rem);
+    font-weight: 800;
+    letter-spacing: -0.055em;
+    line-height: 1.07;
+  }
+
+  .pk-hero h1 span {
+    display: block;
+    color: #f5c518;
+  }
+
+  /* Description */
+
+  .pk-hero-description {
+    max-width: 640px;
+    margin: 22px 0 0;
+
+    color: #e1e7ef;
+    font-size: clamp(1.1rem, 1.8vw, 1.4rem);
+    font-weight: 500;
+    line-height: 1.55;
+  }
+
+  /* Buttons */
+
+  .pk-hero-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-top: 32px;
+  }
+
+  .pk-hero-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+
+    min-height: 56px;
+    padding: 15px 24px;
+
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 800;
+    line-height: 1.3;
+    text-decoration: none;
+
+    transition:
+      background 200ms ease,
+      border-color 200ms ease,
+      transform 200ms ease;
+  }
+
+  .pk-hero-btn-primary {
+    background: #f5c518;
+    border: 2px solid #f5c518;
+    color: #14263d;
+  }
+
+  .pk-hero-btn-primary:hover {
+    background: #ffda42;
+    border-color: #ffda42;
+    transform: translateY(-2px);
+  }
+
+  .pk-hero-btn-secondary {
+    background: rgba(255, 255, 255, 0.06);
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    color: #ffffff;
+    backdrop-filter: blur(8px);
+  }
+
+  .pk-hero-btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: #ffffff;
+    transform: translateY(-2px);
+  }
+
+  .pk-hero-btn:focus-visible {
+    outline: 3px solid #f5c518;
+    outline-offset: 4px;
+  }
+
+  /* Tablet */
+
+  @media (max-width: 991px) {
+    .pk-hero {
+      min-height: 85svh;
+      padding: 145px 32px 80px;
+    }
+
+    .pk-hero-content {
+      max-width: 650px;
+    }
+
+    .pk-hero h1 {
+      font-size: clamp(3.2rem, 7vw, 4.7rem);
+    }
+  }
+
+  /* Mobile */
+
+  @media (max-width: 767px) {
+    .pk-hero {
+      min-height: 100svh;
+      padding: 130px 20px 65px;
+      background-position: 60% center;
+    }
+
+    .pk-hero::before {
+      background: linear-gradient(
+        90deg,
+        rgba(7, 18, 30, 0.92),
+        rgba(7, 18, 30, 0.65)
+      );
+    }
+
+    .pk-hero-badge {
+      margin-bottom: 20px;
+      font-size: 0.85rem;
+      padding: 8px 14px;
+    }
+
+    .pk-hero h1 {
+      font-size: clamp(2.8rem, 10vw, 4.2rem);
+      line-height: 1.08;
+    }
+
+    .pk-hero-description {
+      margin-top: 20px;
+      font-size: 1.05rem;
+      line-height: 1.6;
+    }
+
+    .pk-hero-actions {
+      width: 100%;
+      margin-top: 28px;
+      gap: 12px;
+    }
+
+    .pk-hero-btn {
+      min-height: 52px;
+      padding: 13px 18px;
+      font-size: 0.9rem;
+    }
+  }
+
+  @media (max-width: 420px) {
+    .pk-hero-actions {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .pk-hero-btn {
+      width: 100%;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pk-hero-btn {
+      transition: none;
+    }
+  }
+</style>

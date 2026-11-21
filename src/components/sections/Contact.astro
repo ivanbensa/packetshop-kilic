@@ -1,0 +1,308 @@
+---
+import { MapPin, Clock3, CarFront, ArrowUpRight } from "@lucide/astro";
+
+const mapsUrl = "https://maps.app.goo.gl/qmXCYYK7oojWE8nC8";
+
+// Fotografiju dodajemo kasnije.
+const parkingImage = "";
+---
+
+<section id="standort" class="contact-section" aria-labelledby="contact-title">
+  {parkingImage && (
+    <img
+      src={parkingImage}
+      alt=""
+      class="contact-background"
+      loading="lazy"
+      decoding="async"
+    />
+  )}
+
+  <div class="contact-container">
+    <h2 id="contact-title" class="sr-only">
+      Standort und Kontakt
+    </h2>
+
+    <div class="contact-grid">
+      <!-- Standort -->
+      <div class="contact-item">
+        <MapPin size={34} stroke-width={2} aria-hidden="true" />
+
+        <div class="contact-content">
+          <h3>Standort</h3>
+
+          <p class="contact-shop-name">Packetshop Kilic</p>
+
+          <address>
+            Titusweg 3<br />
+            13509 Berlin
+          </address>
+
+          <a
+            href={mapsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="contact-link"
+          >
+            Route planen
+            <ArrowUpRight size={16} aria-hidden="true" />
+          </a>
+        </div>
+      </div>
+
+      <!-- Öffnungszeiten -->
+      <div class="contact-item">
+        <Clock3 size={34} stroke-width={2} aria-hidden="true" />
+
+        <div class="contact-content">
+          <h3>Öffnungszeiten</h3>
+
+          <p>
+            Die genauen Öffnungszeiten
+            <br />
+            folgen in Kürze.
+          </p>
+        </div>
+      </div>
+
+      <!-- Parking -->
+      <div class="contact-item">
+        <CarFront size={36} stroke-width={2} aria-hidden="true" />
+
+        <div class="contact-content">
+          <h3>Parken</h3>
+
+          <p>
+            Parkplätze am NORMA-Markt
+            <br />
+            direkt vor Ort.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .contact-section {
+    position: relative;
+    isolation: isolate;
+    width: 100%;
+    min-height: 210px;
+    padding: 38px 24px;
+    overflow: hidden;
+    background: #152638;
+    color: #ffffff;
+    scroll-margin-top: 6rem;
+  }
+
+  /* Background photograph */
+
+  .contact-background {
+    position: absolute;
+    inset: 0 0 0 auto;
+    z-index: -2;
+    width: 50%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  /* Dark overlay */
+
+  .contact-section::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+
+    background: linear-gradient(
+      90deg,
+      rgba(15, 27, 39, 0.98) 0%,
+      rgba(15, 27, 39, 0.95) 48%,
+      rgba(15, 27, 39, 0.82) 72%,
+      rgba(15, 27, 39, 0.28) 100%
+    );
+  }
+
+  .contact-container {
+    width: 100%;
+    max-width: 1280px;
+    margin-inline: auto;
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  /* Three columns */
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: stretch;
+  }
+
+  .contact-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    min-width: 0;
+    padding: 10px 28px;
+  }
+
+  .contact-item:first-child {
+    padding-left: 0;
+  }
+
+  .contact-item:not(:last-child) {
+    border-right: 1px solid rgba(255, 255, 255, 0.25);
+  }
+
+  /* Yellow icons */
+
+  .contact-item > svg {
+    flex-shrink: 0;
+    color: #f5c518;
+  }
+
+  .contact-content {
+    min-width: 0;
+  }
+
+  .contact-content h3 {
+    margin: 0 0 16px;
+    color: #ffffff;
+    font-size: clamp(1.15rem, 1.7vw, 1.5rem);
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: -0.025em;
+  }
+
+  .contact-content p,
+  .contact-content address {
+    margin: 0;
+    color: #e1e7ef;
+    font-size: 0.98rem;
+    font-style: normal;
+    line-height: 1.55;
+  }
+
+  .contact-content .contact-shop-name {
+    margin-bottom: 4px;
+    color: #ffffff;
+    font-weight: 700;
+  }
+
+  /* Directions link */
+
+  .contact-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 12px;
+    color: #f5c518;
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: color 200ms ease;
+  }
+
+  .contact-link:hover {
+    color: #ffda42;
+    text-decoration: underline;
+  }
+
+  .contact-link:focus-visible {
+    outline: 2px solid #f5c518;
+    outline-offset: 4px;
+  }
+
+  /* Tablet */
+
+  @media (max-width: 1000px) {
+    .contact-item {
+      gap: 12px;
+      padding-inline: 18px;
+    }
+
+    .contact-item > svg {
+      width: 28px;
+      height: 28px;
+    }
+
+    .contact-content h3 {
+      font-size: 1.1rem;
+    }
+
+    .contact-content p,
+    .contact-content address {
+      font-size: 0.9rem;
+    }
+  }
+
+  /* Mobile */
+
+  @media (max-width: 767px) {
+    .contact-section {
+      padding: 32px 20px;
+    }
+
+    .contact-background {
+      width: 100%;
+      opacity: 0.2;
+    }
+
+    .contact-section::before {
+      background: rgba(15, 27, 39, 0.85);
+    }
+
+    .contact-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .contact-item,
+    .contact-item:first-child {
+      padding: 20px 0;
+      gap: 16px;
+    }
+
+    .contact-item:first-child {
+      padding-top: 0;
+    }
+
+    .contact-item:last-child {
+      padding-bottom: 0;
+    }
+
+    .contact-item:not(:last-child) {
+      border-right: 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .contact-content h3 {
+      margin-bottom: 10px;
+      font-size: 1.2rem;
+    }
+
+    .contact-content p,
+    .contact-content address {
+      font-size: 0.95rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .contact-link {
+      transition: none;
+    }
+  }
+</style>
