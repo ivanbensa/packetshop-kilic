@@ -3,6 +3,7 @@
 import NavLink from "@/components/global/NavLink.astro";
 import { Package } from "@lucide/astro";
 import { SITE_NAME } from "@/consts.ts";
+const homeUrl = `${import.meta.env.BASE_URL.replace(/\/$/, "")}/`;
 
 interface Props {
   render?: boolean;
@@ -59,11 +60,11 @@ const isHome = Astro.url.pathname === "/";
     >
       <div class="nav_menu_inner">
         <ul class="nav_links">
-          <NavLink href="/#services">Leistungen</NavLink>
-          <NavLink href="/#sortiment">Sortiment</NavLink>
-          <NavLink href="/#standort">Standort</NavLink>
-          <NavLink href="/#ueber-uns">Über uns</NavLink>
-          <NavLink href="/#bewertungen">Bewertungen</NavLink>
+          <NavLink href={`${homeUrl}#services`}>Leistungen</NavLink>
+          <NavLink href={`${homeUrl}#sortiment`}>Sortiment</NavLink>
+          <NavLink href={`${homeUrl}#standort`}>Standort</NavLink>
+          <NavLink href={`${homeUrl}#ueber-uns`}>Über uns</NavLink>
+          <NavLink href={`${homeUrl}#bewertungen`}>Bewertungen</NavLink>
         </ul>
       </div>
     </nav>
