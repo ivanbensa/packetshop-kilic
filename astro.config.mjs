@@ -1,16 +1,18 @@
 // @ts-check
 import { defineConfig, fontProviders } from "astro/config";
 import sitemap from "@astrojs/sitemap";
-import { SITE_URL } from "./src/consts.ts";
 import { isNoindexRoute } from "./src/utils/seo.ts";
 
 export default defineConfig({
-  site: SITE_URL,
+  site: "https://ivanbensa.github.io",
+  base: "/packetshop-kilic",
+
   integrations: [
     sitemap({
       filter: (page) => !isNoindexRoute(new URL(page).pathname),
     }),
   ],
+
   fonts: [
     {
       name: "Inter",
@@ -27,5 +29,10 @@ export default defineConfig({
       },
     },
   ],
-  vite: { build: { cssTarget: "safari15.4" } },
+
+  vite: {
+    build: {
+      cssTarget: "safari15.4",
+    },
+  },
 });
