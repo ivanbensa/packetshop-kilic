@@ -12,11 +12,14 @@ interface Props {
 
 const { render = true, overlap = false } = Astro.props;
 
-const isHome = Astro.url.pathname === "/";
+const isHome =
+  Astro.url.pathname.replace(/\/+$/, "") ===
+  import.meta.env.BASE_URL.replace(/\/+$/, "");
 ---
 
 {render && (
 <header
+  id="top"
   class:list={[
     "nav_wrap",
     (isHome || overlap) && "nav-overlay",
@@ -24,7 +27,7 @@ const isHome = Astro.url.pathname === "/";
   data-fade={isHome ? "true" : "false"}
 >
   <div class="nav_inner">
-    <a class="nav_logo" href="/" aria-label={SITE_NAME}>
+    <a class="nav_logo" href={`${homeUrl}#top`} aria-label={SITE_NAME}>
       <Package
         class="brand_icon"
         size={44}
@@ -62,9 +65,7 @@ const isHome = Astro.url.pathname === "/";
         <ul class="nav_links">
           <NavLink href={`${homeUrl}#services`}>Leistungen</NavLink>
           <NavLink href={`${homeUrl}#sortiment`}>Sortiment</NavLink>
-          <NavLink href={`${homeUrl}#standort`}>Standort</NavLink>
-          <NavLink href={`${homeUrl}#ueber-uns`}>Über uns</NavLink>
-          <NavLink href={`${homeUrl}#bewertungen`}>Bewertungen</NavLink>
+          <NavLink href={`${homeUrl}#ueber-uns`}>Infos & Kontakt</NavLink>
         </ul>
       </div>
     </nav>
@@ -86,30 +87,34 @@ const isHome = Astro.url.pathname === "/";
     .nav_menu_inner {
       opacity: 1;
     }
+
+
   </style>
 </noscript>
+
 
 <script>
   const nav = document.querySelector<HTMLElement>(".nav_wrap");
   const toggle = nav?.querySelector<HTMLButtonElement>(".nav_toggle");
 
   if (nav && toggle) {
-    const fadeEnabled = nav.dataset.fade === "true";
-    let ticking = false;
+    const logo = nav.querySelector<HTMLAnchorElement>(".nav_logo");
 
-    const updateFade = () => {
-      if (!fadeEnabled) return;
+    logo?.addEventListener("click", (event) => {
+      const currentPath = window.location.pathname.replace(/\/+$/, "");
+      const homePath = import.meta.env.BASE_URL.replace(/\/+$/, "");
 
-      const menuOpen = nav.classList.contains("open");
+      if (currentPath !== homePath) return;
 
-      const opacity = menuOpen
-        ? 1
-        : Math.max(0, 1 - window.scrollY / 260);
+      event.preventDefault();
 
-      nav.style.opacity = String(opacity);
-      nav.style.pointerEvents = opacity < 0.05 ? "none" : "auto";
-      nav.inert = opacity < 0.05;
-    };
+      window.scrollTo({
+        top: 0,
+        behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+          ? "instant"
+          : "smooth",
+      });
+    });
 
     const setOpen = (open: boolean) => {
       nav.classList.toggle("open", open);
@@ -119,12 +124,10 @@ const isHome = Astro.url.pathname === "/";
         "aria-label",
         open ? "Menü schließen" : "Menü öffnen"
       );
-
-      updateFade();
     };
 
     toggle.addEventListener("click", () => {
-      setOpen(toggle.getAttribute("aria-expanded") !== "true");
+      setOpen(!nav.classList.contains("open"));
     });
 
     nav.querySelectorAll("a").forEach((link) => {
@@ -153,24 +156,9 @@ const isHome = Astro.url.pathname === "/";
       .addEventListener("change", (event) => {
         if (event.matches) setOpen(false);
       });
-
-    window.addEventListener(
-      "scroll",
-      () => {
-        if (!ticking) {
-          window.requestAnimationFrame(() => {
-            updateFade();
-            ticking = false;
-          });
-          ticking = true;
-        }
-      },
-      { passive: true }
-    );
-
-    updateFade();
   }
 </script>
+
 
 <style is:global>
   @layer components {
@@ -192,7 +180,8 @@ const isHome = Astro.url.pathname === "/";
     }
 
     .nav_wrap.nav-overlay {
-      position: fixed;
+      position: sticky;
+      top: 0;
     }
 
     .nav_inner {
